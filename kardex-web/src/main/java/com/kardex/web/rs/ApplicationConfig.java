@@ -34,7 +34,6 @@ public class ApplicationConfig extends Application {
         resources.add(com.kardex.web.rs.ProductResource.class);
         resources.add(com.kardex.web.rs.UsuarioLoginResource.class);
         resources.add(com.kardex.web.rs.VentaResource.class);
-        resources.add(org.glassfish.jersey.filter.LoggingFilter.class);
     }
     
 }
