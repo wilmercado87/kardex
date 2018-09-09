@@ -1,0 +1,12 @@
+<datasource jta="true" jndi-name="java:/kardexDS" pool-name="KardexDS" enabled="true" use-ccm="true">
+	<connection-url>jdbc:mysql://localhost:3306/kardex</connection-url>
+	<driver>mysql</driver>
+	<security>
+		<user-name>???</user-name>
+		<password>????</password>
+	</security>
+	<validation>
+		<valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker"/>
+		<exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"/>
+	</validation>
+</datasource>

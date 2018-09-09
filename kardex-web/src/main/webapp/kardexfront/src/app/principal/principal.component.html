@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>KARDEX STORE</title>
+    </head>
+    <body>
+        <div style="width: 100%; height: 100%" class="tablaGeneral">
+
+            <header>
+                    <h3 class="tituloHead">{{resourceBundle.label_title_info_ppal}}</h3>
+                    <table style="position: absolute; right: 14px; top: 10px">
+                        <thead>
+                            <tr>
+                                <th class="textoFuente12NegritaCellPequeña">{{resourceBundle.label_user_name}}</th>
+                                <th class="textoFuente12NegritaCellPequeña">{{resourceBundle.label_date}}</th>
+                                <th class="textoFuente12NegritaCellPequeña">{{resourceBundle.label_ip}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="tituloTabla">{{usuarioVo.nombreUsuario}}</td>
+                                <td class="tituloTabla">{{currentDate | date: 'dd-MM-yyyy'}}</td>
+                                <td class="tituloTabla">{{usuarioIp}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="position: absolute; right: 35px; top: 75px" class="tituloTabla">
+                        <a class="exit" [routerLink]="['/login']" [queryParams]="{logout: true}" routerLinkActive="router-link-active">
+                            {{resourceBundle.label_safe_exit}}
+                        </a>
+                    </div>
+            </header>
+            <nav>
+                <p-panelMenu [model]="items"  [style]="{'width':'220px'}" [multiple]="false"></p-panelMenu> 
+            </nav>
+
+            <article>
+                <router-outlet name="router_contenido"></router-outlet>
+            </article>
+
+            <footer class="tituloTabla">{{resourceBundle.label_foot_ppal}}</footer>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Login</title>
+    </head>
+    <body>
+        <form #loginForm="ngForm">
+            <div style="position: absolute; left: 700px; top: 200px" class="loading">
+                <img src="assets/loader.gif" />
+            </div>
+            <table style="position: absolute; left: 500px; top: 150px" align="center" class="tablaGeneral">
+                <tr>
+                    <td align="center" class="tituloTabla" colspan="2">{{resourceBundle.label_title_info_login}}</td>
+                </tr>
+                <tr>
+                    <td class="textoFuente12Negrita">
+                        <div class="form-group"><label for="userName">{{resourceBundle.label_user_name}}</label></div>
+                    </td>
+                    <td class="celdaNormal">
+                        <div class="form-group"><input type="text" class="form-control" id="userName" name="userName" required ngControl="userName" [(ngModel)]="usuarioVo.nombreUsuario" #userName="ngModel" (keypress)=onClear()/></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div *ngIf="!userName.valid && userName.touched" class="alert alert-danger, mensajeError">
+                            {{resourceBundle.error_user_name_required}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="textoFuente12Negrita">
+                        <div class="form-group"><label for="passUser">{{resourceBundle.label_password}}</label></div>
+                    </td>
+                    <td class="celdaNormal">
+                        <div class="form-group"><input type="password" class="form-control" id="passUser" name="passUser" required ngControl="passUser" [(ngModel)]="usuarioVo.contrasena" #passUser="ngModel" (keypress)=onClear()/></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div *ngIf="!passUser.valid && passUser.touched" class="alert alert-danger, mensajeError">
+                            {{resourceBundle.error_password_required}}
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td class="textoFuente12Negrita">
+                        <div class="form-group"><label>{{resourceBundle.label_language}}</label></div>
+                    </td>
+                    <td class="celdaNormal">
+                        <div class="form-group">
+                            <select style="width: 180px" [compareWith]="byOption" class="form-control" id="locale" name="locale" [(ngModel)]="selLocale" ngControl="locale" (change)="onchangeLocale(selLocale)">
+                                <option value="es">ESPAÑOL</option>
+                                <option value="en">ENGLISH</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td colspan="2" align="center">
+                        <p-button label="{{resourceBundle.button_enter}}" [disabled]="!loginForm.form.valid" (onClick)="onLogin(loginForm)" icon="pi pi-unlock" iconPos="left"></p-button>
+                        <br>
+                        <p-messages [(value)]="msgs"></p-messages>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>     

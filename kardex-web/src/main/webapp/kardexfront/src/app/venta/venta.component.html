@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{{resourceBundle.label_title_generate_sale}}</title>
+    </head>
+    <body>
+        <form #ventaForm="ngForm">
+            
+            <table style="left: 520px" align="center" class="tablaGeneral">
+                <tr>
+                    <td align="center" class="tituloTabla" colspan="4">{{resourceBundle.label_title_generate_sale}}</td>
+                </tr>
+                <tr>
+                    <td class="textoFuente12Negrita">
+                        <div class="form-group"><label for="idClient">{{resourceBundle.label_id_client}}</label></div>
+                    </td>
+                    <td class="celdaNormal">
+                        <div class="form-group"><input type="text" class="form-control" id="idClient" name="idClient" required ngControl="idClient" pattern="[0-9]*" [(ngModel)]="ventaVo.idCliente" #idClient="ngModel" (keypress)=onClear()/></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div *ngIf="!idClient.valid && idClient.touched" class="alert alert-danger, mensajeError">
+                            {{resourceBundle.error_id_client_required}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="textoFuente12Negrita">
+                        <div class="form-group"><label for="nameClient">{{resourceBundle.label_name_client}}</label></div>
+                    </td>
+                    <td class="celdaNormal">
+                        <div class="form-group"><input type="text" class="form-control" id="nameClient" name="nameClient" required ngControl="nameClient" pattern="[a-zA-Z][a-zA-Z ]+" [(ngModel)]="ventaVo.nombreCliente" #nameClient="ngModel" (keypress)=onClear()/></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div *ngIf="!nameClient.valid && nameClient.touched" class="alert alert-danger, mensajeError">
+                            {{resourceBundle.error_name_client_required}}
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            
+            <br>
+            <div style="position: absolute;left: 500px">
+                <p-table styleClass="tablaGeneral" [value]="ventaDetalleList" [paginator]="true" [rows]="10" [style]="{'width':'600px'}">
+                <ng-template pTemplate="caption" styleClass="tituloTabla">
+                    {{resourceBundle.label_sale_detail}}
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr class="tituloTabla">
+                        <th style="width: 200px">{{resourceBundle.label_name_product}}</th>
+                        <th>{{resourceBundle.label_quantity}}</th>
+                        <th>{{resourceBundle.label_value}}</th>
+                        <th>{{resourceBundle.button_delete}}</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData>
+                    <tr>
+                        <td pEditableColumn class="textoFuente12Negrita">
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <select style="width: 180px" [compareWith]="byOption" id="product" name="product" required class="form-control" ngControl="product" [(ngModel)]="rowData.productoVo.nombre"  #product="ngModel" (change)="onchangeProducto(rowData)">
+					<option *ngFor="let productoVo of productos" [value]="productoVo.nombre">{{productoVo.nombre}}</option>
+                                    </select>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.productoVo.nombre}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn class="textoFuente12Negrita">
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input style="width: 70px" type="text" id="cantidad" name="cantidad" class="form-control" ngControl="cantidad" required pattern="[0-9]*" [(ngModel)]="rowData.cantidad" #cantidad="ngModel" (keydown.tab)="validateCantidad(rowData)"/>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.cantidad}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td  class="textoFuente12Negrita">
+                            {{rowData.cantidad * rowData.productoVo.valorVentaUnidad | currency:'EUR'}}
+                        </td>
+                        <td pEditableColumn class="textoFuente12Negrita">
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <p-button label="{{resourceBundle.button_delete}}" (onClick)="removeVentaDetalle(rowData)" icon="pi pi-trash" iconPos="left"></p-button>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    <p-button label="{{resourceBundle.button_delete}}" (onClick)="removeVentaDetalle(rowData)" icon="pi pi-trash" iconPos="left"></p-button>
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <tr>
+                        <td colspan="2" class="textoFuente12Negrita">Totals</td>
+                        <td class="textoFuente12Negrita">{{ventaVo.valorTotal | currency:'EUR'}}</td>
+                        <td></td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <br>
+            <table align="center">
+                <tr>
+                    <td>
+                        <p-button label="{{resourceBundle.button_add}}" [disabled]="disabledAdd" (onClick)="putVentaDetalle()" icon="pi pi-plus-circle" iconPos="left"></p-button>
+                    </td>
+                    <td>
+                        <p-button label="{{resourceBundle.button_save}}" [disabled]="disabledSave" (onClick)="onSaveVenta(ventaForm)" icon="pi pi-save" iconPos="left"></p-button>
+                    </td>
+                </tr>
+            </table>
+            
+            <br>
+            <table align="center">
+                <tr>
+                    <td colspan="2" align="center">
+                        <p-messages [(value)]="msgs"></p-messages>
+                    </td>
+                </tr>
+            </table>
+            </div>
+        </form>
+    </body>
+</html>
